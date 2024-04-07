@@ -25,29 +25,7 @@ namespace CarSimulation
         /// </summary>
         private static void WelcomeDisplay()
         {
-            Console.WriteLine("                                                Welcome to the Car Simulation Program!\n\n");
-
-            string asciiArt = @"
-                                             __..-======-------..__
-                                          . '    ______    ___________`.
-                                        .' .--. '.-----.`. `.-----.-----`.
-                                       / .'   | ||      `.` \     \     \            _
-                                     .' /     | ||        \ \_____\\_____\\__________[_]
-                                    /   `-----' |'---------`\  .'                       \
-                                   /============|============\'-------------------.._____|
-                                .-`---.         |-==.        |'.__________________  =====|-._
-                                .`        `.      |            |      .--------.    _` ====|  _ .
-                                /     __     \     |            |   .'           `. [_] `.==| [_] \
-                                [   .`    `.  |     |            | .'     .---.     \      \=|     |
-                                |  | / .-. '  |_____\\___________/_/     .'---. `.    |     | |     |
-                                `-'| | O |'..`------------------'.....'/ .-. \ |    |       ___.--'
-                                    \ `-' / /   `._.'                 | | O | |'___...----''___.--'
-                                     `._.'.'                           \ `-' / [___...----''_.']
-                                                                       `._.'.'
-   
-                                          Prepare for a high-speed simulation challenge!";
-
-            Console.WriteLine(asciiArt);
+            Console.WriteLine(Constants.WelcomeMessage);
         }
 
         /// <summary>
@@ -78,11 +56,7 @@ namespace CarSimulation
         /// <returns>The user's choice as a string.</returns>
         private static string GetUserChoice()
         {
-            Console.WriteLine("\nChoose simulation type:");
-            Console.WriteLine("1. Single Car Simulation");
-            Console.WriteLine("2. Multiple Cars Simulation");
-            Console.WriteLine("Type 'q' to exit.");
-            Console.Write("Enter your choice (1 or 2): ");
+            Console.WriteLine(Constants.SimulationTypePrompt);
             return Console.ReadLine();
         }
 
@@ -110,7 +84,7 @@ namespace CarSimulation
             }
             catch (FormatException ex)
             {
-                Console.WriteLine($"Input error: {ex.Message}");
+                Console.WriteLine(string.Format(Constants.GeneralInputFormatError, ex) );
             }
         }
     }

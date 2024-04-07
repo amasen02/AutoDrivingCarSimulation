@@ -69,5 +69,34 @@
         /// The error message for general input format exceptions.
         /// </summary>
         public static readonly string GeneralInputFormatError = "Error: {0} Please try again.";
+        /// <summary>
+        /// The prompt message for requesting the simulation type.
+        /// </summary>
+        public static readonly string SimulationTypePrompt = "\nChoose simulation type:\n1. Single Car Simulation\n2. Multiple Cars Simulation\nType 'q' to exit.\nEnter your choice (1 or 2): ";
+        
+        /// <summary>
+        /// ASCII Art for the welcome display.
+        /// </summary>
+        public static readonly string WelcomeMessage = @"                                              Welcome to the Car Simulation Program!
+
+
+                                             __..-======-------..__
+                                          . '    ______    ___________`.
+                                        .' .--. '.-----.`. `.-----.-----`.
+                                       / .'   | ||      `.` \     \     \            _
+                                     .' /     | ||        \ \_____\\_____\\__________[_]
+                                    /   `-----' |'---------`\  .'                       \
+                                   /============|============\'-------------------.._____|
+                                .-`---.         |-==.        |'.__________________  =====|-._
+                                .`        `.      |            |      .--------.    _` ====|  _ .
+                                /     __     \     |            |   .'           `. [_] `.==| [_] \
+                                [   .`    `.  |     |            | .'     .---.     \      \=|     |
+                                |  | / .-. '  |_____\\___________/_/     .'---. `.    |     | |     |
+                                `-'| | O |'..`------------------'.....'/ .-. \ |    |       ___.--'
+                                    \ `-' / /   `._.'                 | | O | |'___...----''___.--'
+                                     `._.'.'                           \ `-' / [___...----''_.']
+                                                                       `._.'.'
+   
+                                          Prepare for a high-speed simulation challenge!";
     }
 }
