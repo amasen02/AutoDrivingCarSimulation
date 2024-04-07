@@ -1,5 +1,6 @@
 ﻿using CarSimulation.Interfaces;
 using CarSimulation.Models;
+using System.Collections.Generic;
 
 namespace CarSimulation.Utilities
 {
@@ -9,21 +10,19 @@ namespace CarSimulation.Utilities
     /// </summary>
     public class SingleCarInputHandler : InputHandlerBase
     {
-        /// <inheritdoc/>
         public override SimulationInput GetInput()
         {
-            // Request field size
             var (width, height) = RequestFieldSize();
-
-            // Request car input without specifying a name
             var carInput = RequestCarInput();
-
-            // Request commands for the car
             var commands = RequestCommands();
+            var commandsPerCar = CreateCommandsPerCarDictionary(carInput, commands);
 
-            // Prepare and return simulation input
-            var commandsPerCar = new Dictionary<string, List<ICommand>> { { carInput.Name, commands } };
             return new SimulationInput(width, height, new List<CarInput> { carInput }, commandsPerCar);
+        }
+
+        private Dictionary<string, List<ICommand>> CreateCommandsPerCarDictionary(CarInput carInput, List<ICommand> commands)
+        {
+            return new Dictionary<string, List<ICommand>> { { carInput.Name, commands } };
         }
     }
 }

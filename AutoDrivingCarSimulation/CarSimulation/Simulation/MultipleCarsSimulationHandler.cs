@@ -1,6 +1,8 @@
 ﻿using CarSimulation.Interfaces;
 using CarSimulation.Models;
 using CarSimulation.Utilities;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace CarSimulation.Simulation
@@ -34,20 +36,9 @@ namespace CarSimulation.Simulation
         {
             var simulationInput = inputHandler.GetInput();
             var cars = InitializeCars(simulationInput.CarInputs);
-            var maxCommandsCount = simulationInput.CommandsPerCar.Values.Max(c => c.Count);
+            var maxCommandsCount = GetMaxCommandsCount(simulationInput.CommandsPerCar);
 
-            for (int step = 0; step < maxCommandsCount; step++)
-            {
-                ExecuteCommandsForStep(cars, simulationInput.CommandsPerCar, step);
-                var allCollisions = collisionDetector.DetectCollisions(cars, step + 1 );
-                if (allCollisions.Any())
-                {
-                    outputHandler.OutputResult(FormatCollisions(allCollisions));
-                    return;
-                }
-            }
-
-            outputHandler.OutputResult(Constants.NoCollisionMessage);
+            RunSimulationSteps(cars, simulationInput.CommandsPerCar, maxCommandsCount);
         }
 
         /// <summary>
@@ -59,6 +50,35 @@ namespace CarSimulation.Simulation
         {
             return carInputs.ToDictionary(carInput => carInput.Name,
                                           carInput => new Car(carInput.X, carInput.Y, carInput.Orientation, carInput.Name));
+        }
+
+        /// <summary>
+        /// Gets the maximum number of commands among all cars.
+        /// </summary>
+        /// <param name="commandsPerCar">The commands per car dictionary.</param>
+        /// <returns>The maximum number of commands.</returns>
+        private int GetMaxCommandsCount(Dictionary<string, List<ICommand>> commandsPerCar)
+        {
+            return commandsPerCar.Values.Max(c => c.Count);
+        }
+
+        /// <summary>
+        /// Executes the commands for each car in parallel for each simulation step.
+        /// </summary>
+        /// <param name="cars">The cars participating in the simulation.</param>
+        /// <param name="commandsPerCar">The commands to be executed for each car.</param>
+        /// <param name="maxCommandsCount">The maximum number of commands among all cars.</param>
+        private void RunSimulationSteps(Dictionary<string, Car> cars, Dictionary<string, List<ICommand>> commandsPerCar, int maxCommandsCount)
+        {
+            for (int step = 0; step < maxCommandsCount; step++)
+            {
+                ExecuteCommandsForStep(cars, commandsPerCar, step);
+                if (DetectAndHandleCollisions(cars, step))
+                {
+                    return;
+                }
+            }
+            HandleNoCollisions();
         }
 
         /// <summary>
@@ -80,6 +100,40 @@ namespace CarSimulation.Simulation
         }
 
         /// <summary>
+        /// Detects collisions between cars and handles them if detected.
+        /// </summary>
+        /// <param name="cars">The cars participating in the simulation.</param>
+        /// <param name="step">The current step of the simulation.</param>
+        /// <returns>True if a collision is detected and handled, otherwise false.</returns>
+        private bool DetectAndHandleCollisions(Dictionary<string, Car> cars, int step)
+        {
+            var collisions = collisionDetector.DetectCollisions(cars, step + 1);
+            if (collisions.Any())
+            {
+                HandleCollisions(collisions);
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Handles collisions by formatting collision data and outputting the result.
+        /// </summary>
+        /// <param name="collisions">The collisions detected during the simulation.</param>
+        private void HandleCollisions(List<Collision> collisions)
+        {
+            var collisionReport = FormatCollisions(collisions);
+            outputHandler.OutputResult(collisionReport);
+        }
+
+        /// <summary>
+        /// Handles the case when no collisions are detected during the simulation.
+        /// </summary>
+        private void HandleNoCollisions()
+        {
+            outputHandler.OutputResult(Constants.NoCollisionMessage);
+        }
+        /// <summary>
         /// Formats the list of collisions for output.
         /// </summary>
         /// <param name="collisions">The collisions detected during the simulation.</param>
@@ -87,11 +141,33 @@ namespace CarSimulation.Simulation
         private string FormatCollisions(List<Collision> collisions)
         {
             var collisionReport = new StringBuilder();
-            foreach (var collision in collisions.OrderBy(c => c.Step))
+            var uniqueCollisions = GetUniqueCollisions(collisions);
+
+            foreach (var collision in uniqueCollisions.OrderBy(c => c.Step))
             {
-                collisionReport.AppendLine($"{string.Join(" ", collision.CarsInvolved)}\n{collision.Position.X} {collision.Position.Y}\n{collision.Step}\n");
+                AppendCollisionDetails(collisionReport, collision);
             }
             return collisionReport.ToString().TrimEnd();
+        }
+
+        /// <summary>
+        /// Gets unique collisions based on their step.
+        /// </summary>
+        /// <param name="collisions">The list of collisions.</param>
+        /// <returns>A collection of unique collisions.</returns>
+        private IEnumerable<Collision> GetUniqueCollisions(List<Collision> collisions)
+        {
+            return collisions.GroupBy(c => c.Step).Select(group => group.First());
+        }
+
+        /// <summary>
+        /// Appends collision details to the collision report.
+        /// </summary>
+        /// <param name="collisionReport">The string builder to append the collision details to.</param>
+        /// <param name="collision">The collision to append details for.</param>
+        private void AppendCollisionDetails(StringBuilder collisionReport, Collision collision)
+        {
+            collisionReport.AppendLine($"{string.Join(" ", collision.CarsInvolved)}\n{collision.Position.X} {collision.Position.Y}\n{collision.Step}\n");
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using CarSimulation.Interfaces;
 using CarSimulation.Models;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace CarSimulation.Simulation
 {
@@ -22,38 +24,75 @@ namespace CarSimulation.Simulation
         {
             this.inputHandler = inputHandler;
             this.outputHandler = outputHandler;
-
-            // Initialize the field with simulation dimensions
             var simulationInput = inputHandler.GetInput();
             field = new Field(simulationInput.Width, simulationInput.Height);
         }
 
         /// <summary>
-        /// Executes the simulation for a single car, applying a sequence of commands to navigate the car within the simulation field.
+        /// Executes the simulation for a single car.
         /// </summary>
         public void RunSimulation()
         {
-            // Retrieve the simulation input data
             var simulationInput = inputHandler.GetInput();
             var carInput = simulationInput.CarInputs.First();
+            var car = InitializeCar(carInput);
+            ExecuteCommands(car, simulationInput.CommandsPerCar.Values.First());
+            OutputFinalPosition(car);
+        }
 
-            // Initialize the car using the input data
-            var car = new Car(carInput.X, carInput.Y, carInput.Orientation);
+        /// <summary>
+        /// Initializes the car using the provided input data.
+        /// </summary>
+        /// <param name="carInput">Input data for the car.</param>
+        /// <returns>The initialized car.</returns>
+        private Car InitializeCar(CarInput carInput)
+        {
+            return new Car(carInput.X, carInput.Y, carInput.Orientation);
+        }
 
-            // Execute each command for the car
-            foreach (var command in simulationInput.CommandsPerCar.Values.First())
+        /// <summary>
+        /// Executes each command for the car.
+        /// </summary>
+        /// <param name="car">The car to execute commands for.</param>
+        /// <param name="commands">The commands to be executed.</param>
+        private void ExecuteCommands(Car car, List<ICommand> commands)
+        {
+            foreach (var command in commands)
             {
-                command.Execute(car);
-
-                // Check if the car remains within the bounds after command execution
-                if (!field.IsInsideBounds(car.Position))
+                ExecuteSingleCommand(car, command);
+                if (!IsInsideBounds(car))
                 {
-                    // If a command moves the car out of bounds, ignore it and do not update the car's position
                     break;
                 }
             }
+        }
 
-            // Output the final position and orientation of the car
+        /// <summary>
+        /// Executes a single command for the car.
+        /// </summary>
+        /// <param name="car">The car to execute the command for.</param>
+        /// <param name="command">The command to be executed.</param>
+        private void ExecuteSingleCommand(Car car, ICommand command)
+        {
+            command.Execute(car);
+        }
+
+        /// <summary>
+        /// Checks if the car is inside the simulation field bounds.
+        /// </summary>
+        /// <param name="car">The car to check.</param>
+        /// <returns>True if the car is inside the bounds, otherwise false.</returns>
+        private bool IsInsideBounds(Car car)
+        {
+            return field.IsInsideBounds(car.Position);
+        }
+
+        /// <summary>
+        /// Outputs the final position and orientation of the car.
+        /// </summary>
+        /// <param name="car">The car whose final position and orientation are to be output.</param>
+        private void OutputFinalPosition(Car car)
+        {
             outputHandler.OutputResult($"{car.Position.X} {car.Position.Y} {car.Orientation}");
         }
     }
