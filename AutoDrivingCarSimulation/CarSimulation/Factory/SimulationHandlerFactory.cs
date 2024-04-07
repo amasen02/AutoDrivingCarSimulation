@@ -14,9 +14,15 @@ namespace CarSimulation.Factory
         /// <returns>An instance of <see cref="ISimulationHandler"/> tailored to the selected simulation type.</returns>
         public static ISimulationHandler CreateSimulationHandler(bool isSingle, IInputHandler inputHandler, IOutputHandler outputHandler)
         {
-            return isSingle
-                ? new SingleCarSimulationHandler(inputHandler, outputHandler)
-                : new MultipleCarsSimulationHandler(inputHandler, outputHandler);
+            if (isSingle)
+            {
+                return new SingleCarSimulationHandler(inputHandler, outputHandler);
+            }
+            else
+            {
+                var collisionDetector = new CollisionDetector(); // Instantiate or inject the collision detector implementation
+                return new MultipleCarsSimulationHandler(inputHandler, outputHandler, collisionDetector);
+            }
         }
     }
 }

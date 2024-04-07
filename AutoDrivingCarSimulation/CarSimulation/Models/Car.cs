@@ -19,11 +19,6 @@ namespace CarSimulation.Models
         public (int X, int Y) Position { get; set; }
 
         /// <summary>
-        /// Gets or sets the simulation step number at which the collision occurred.
-        /// </summary>
-        public int CollisionStep { get; set; }
-
-        /// <summary>
         /// Gets or sets the orientation of the car.
         /// </summary>
         public Orientation Orientation { get; set; }

@@ -1,3 +1,4 @@
+using CarSimulation.Interfaces;
 using CarSimulation.Models;
 
 namespace CarSimulation.Simulation
@@ -5,14 +6,15 @@ namespace CarSimulation.Simulation
     /// <summary>
     /// Handles the detection of collisions between cars in the simulation.
     /// </summary>
-    public class CollisionHandler
+    public class CollisionDetector : ICollisionDetector
     {
         /// <summary>
         /// Detects collisions based on the current positions of all cars in the simulation.
         /// </summary>
         /// <param name="cars">A dictionary containing cars with their unique names as keys.</param>
+        /// <param name="cars">Index of the command which is executing<.</param>
         /// <returns>A list of collisions detected during the current simulation step.</returns>
-        public List<Collision> DetectCollisions(Dictionary<string, Car> cars)
+        public List<Collision> DetectCollisions(Dictionary<string, Car> cars, int step)
         {
             // Initialize the list to store detected collisions
             var collisions = new List<Collision>();
@@ -33,7 +35,7 @@ namespace CarSimulation.Simulation
                     // Set the position of the collision
                     Position = group.Key,
                     // Determine the simulation step when the collision occurred
-                    Step = cars.Values.Max(car => car.CollisionStep)
+                    Step = step
                 };
                 // Add the collision to the list of collisions
                 collisions.Add(collision);

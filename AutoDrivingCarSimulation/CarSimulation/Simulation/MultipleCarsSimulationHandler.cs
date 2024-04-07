@@ -12,16 +12,19 @@ namespace CarSimulation.Simulation
     {
         private readonly IInputHandler inputHandler;
         private readonly IOutputHandler outputHandler;
+        private readonly ICollisionDetector collisionDetector;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MultipleCarsSimulationHandler"/> class.
         /// </summary>
         /// <param name="inputHandler">The input handler to gather simulation settings.</param>
         /// <param name="outputHandler">The output handler to display simulation results.</param>
-        public MultipleCarsSimulationHandler(IInputHandler inputHandler, IOutputHandler outputHandler)
+        /// <param name="collisionDetector">The collision detector.</param>
+        public MultipleCarsSimulationHandler(IInputHandler inputHandler, IOutputHandler outputHandler, ICollisionDetector collisionDetector)
         {
             this.inputHandler = inputHandler;
             this.outputHandler = outputHandler;
+            this.collisionDetector = collisionDetector;
         }
 
         /// <summary>
@@ -36,7 +39,7 @@ namespace CarSimulation.Simulation
             for (int step = 0; step < maxCommandsCount; step++)
             {
                 ExecuteCommandsForStep(cars, simulationInput.CommandsPerCar, step);
-                var allCollisions = CheckForCollisions(cars, step + 1);
+                var allCollisions = collisionDetector.DetectCollisions(cars, step + 1 );
                 if (allCollisions.Any())
                 {
                     outputHandler.OutputResult(FormatCollisions(allCollisions));
@@ -77,26 +80,11 @@ namespace CarSimulation.Simulation
         }
 
         /// <summary>
-        /// Checks for collisions between cars at the current step of the simulation.
-        /// </summary>
-        /// <param name="cars">The cars participating in the simulation.</param>
-        /// <param name="step">The step number at which to check for collisions.</param>
-        /// <returns>A list of collision events.</returns>
-        private List<(List<string> CarsInvolved, (int X, int Y) Position, int Step)> CheckForCollisions(Dictionary<string, Car> cars, int step)
-        {
-            return cars.Values
-                       .GroupBy(car => car.Position)
-                       .Where(group => group.Count() > 1)
-                       .Select(group => (group.Select(car => car.Name).ToList(), group.Key, step))
-                       .ToList();
-        }
-
-        /// <summary>
         /// Formats the list of collisions for output.
         /// </summary>
         /// <param name="collisions">The collisions detected during the simulation.</param>
         /// <returns>A formatted string representing the collisions.</returns>
-        private string FormatCollisions(List<(List<string> CarsInvolved, (int X, int Y) Position, int Step)> collisions)
+        private string FormatCollisions(List<Collision> collisions)
         {
             var collisionReport = new StringBuilder();
             foreach (var collision in collisions.OrderBy(c => c.Step))

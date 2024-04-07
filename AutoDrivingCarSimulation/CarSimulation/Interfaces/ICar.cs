@@ -24,11 +24,6 @@ namespace CarSimulation.Interfaces
         Orientation Orientation { get; set; }
 
         /// <summary>
-        /// The simulation step at which the car experienced a collision.
-        /// </summary>
-        int CollisionStep { get; set; }
-
-        /// <summary>
         /// Applies a command to the car, updating its position or orientation.
         /// </summary>
         /// <param name="command">The command to apply.</param>

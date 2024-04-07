@@ -26,24 +26,28 @@ namespace CarSimulation
         private static void WelcomeDisplay()
         {
             Console.WriteLine("         Welcome to the Car Simulation Program!\n\n");
-            // Your ASCII art here
-            Console.WriteLine("             __..-======-------..__");
-            Console.WriteLine("          . '    ______    ___________`.");
-            Console.WriteLine("        .' .--. '.-----.`. `.-----.-----`.");
-            Console.WriteLine("       / .'   | ||      `.` \\     \\     \\            _");
-            Console.WriteLine("     .' /     | ||        \\ \\_____\\_____\\__________[_]");
-            Console.WriteLine("    /   `-----' |'---------`\\  .'                       \\");
-            Console.WriteLine("   /============|============\\'-------------------.._____|");
-            Console.WriteLine(".-`---.         |-==.        |'.__________________  =====|-._");
-            Console.WriteLine(".`        `.      |            |      .--------.    _` ====|  _ .");
-            Console.WriteLine("/     __     \\     |            |   .'           `. [_] `.==| [_] \\");
-            Console.WriteLine("[   .`    `.  |     |            | .'     .---.     \\      \\=|     |");
-            Console.WriteLine("|  | / .-. '  |_____\\___________/_/     .'---. `.    |     | |     |");
-            Console.WriteLine(" `-'| | O |'..`------------------'.....'/ .-. \\ |    |       ___.--'");
-            Console.WriteLine("     \\ `-' / /   `._.'                 | | O | |'___...----''___.--'");
-            Console.WriteLine("      `._.'.'                           \\ `-' / [___...----''_.']");
-            Console.WriteLine("                                         `._.'.'");
-            Console.WriteLine("\n   Prepare for a high-speed simulation challenge!");
+
+            string asciiArt = @"
+                                             __..-======-------..__
+                                          . '    ______    ___________`.
+                                        .' .--. '.-----.`. `.-----.-----`.
+                                       / .'   | ||      `.` \     \     \            _
+                                     .' /     | ||        \ \_____\\_____\\__________[_]
+                                    /   `-----' |'---------`\  .'                       \
+                                   /============|============\'-------------------.._____|
+                                .-`---.         |-==.        |'.__________________  =====|-._
+                                .`        `.      |            |      .--------.    _` ====|  _ .
+                                /     __     \     |            |   .'           `. [_] `.==| [_] \
+                                [   .`    `.  |     |            | .'     .---.     \      \=|     |
+                                |  | / .-. '  |_____\\___________/_/     .'---. `.    |     | |     |
+                                `-'| | O |'..`------------------'.....'/ .-. \ |    |       ___.--'
+                                    \ `-' / /   `._.'                 | | O | |'___...----''___.--'
+                                     `._.'.'                           \ `-' / [___...----''_.']
+                                                                       `._.'.'
+   
+                                   Prepare for a high-speed simulation challenge!";
+
+            Console.WriteLine(asciiArt);
         }
 
         /// <summary>

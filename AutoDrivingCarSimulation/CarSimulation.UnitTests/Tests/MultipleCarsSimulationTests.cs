@@ -35,8 +35,9 @@ namespace CarSimulation.UnitTests.Tests
                     { "B", ParseCommands("RLRLRL") }
                 }
             };
+            var collisionDetector = new CollisionDetector();
             var outputHandler = new TestOutputHandler();
-            var simulationHandler = new MultipleCarsSimulationHandler(inputHandler, outputHandler);
+            var simulationHandler = new MultipleCarsSimulationHandler(inputHandler, outputHandler, collisionDetector);
 
             // Act
             simulationHandler.RunSimulation();
@@ -65,8 +66,9 @@ namespace CarSimulation.UnitTests.Tests
                         { "B", ParseCommands("FFLFFFFFFF") }
                     }
             };
+            var collisionDetector = new CollisionDetector();
             var outputHandler = new TestOutputHandler();
-            var simulationHandler = new MultipleCarsSimulationHandler(inputHandler, outputHandler);
+            var simulationHandler = new MultipleCarsSimulationHandler(inputHandler, outputHandler, collisionDetector);
 
             // Act
             simulationHandler.RunSimulation();
