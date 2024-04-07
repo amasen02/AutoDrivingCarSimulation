@@ -1,7 +1,7 @@
-﻿using CarSimulation.Models;
-using CarSimulation.Commands;
+﻿using CarSimulation.Commands;
 using CarSimulation.Enums;
 using CarSimulation.Interfaces;
+using CarSimulation.Models;
 
 namespace CarSimulation.UnitTests.Tests
 {

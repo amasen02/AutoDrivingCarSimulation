@@ -30,15 +30,20 @@ namespace CarSimulation.Simulation
         {
             var simulationInput = inputHandler.GetInput();
             var cars = InitializeCars(simulationInput.CarInputs);
-            var allCollisions = new List<(List<string>, (int, int), int)>();
+            var maxCommandsCount = simulationInput.CommandsPerCar.Values.Max(c => c.Count);
 
-            for (int step = 0; step < simulationInput.CommandsPerCar.Values.Max(c => c.Count); step++)
+            for (int step = 0; step < maxCommandsCount; step++)
             {
                 ExecuteCommandsForStep(cars, simulationInput.CommandsPerCar, step);
-                allCollisions.AddRange(CheckForCollisions(cars, step + 1));
+                var allCollisions = CheckForCollisions(cars, step + 1);
+                if (allCollisions.Any())
+                {
+                    outputHandler.OutputResult(FormatCollisions(allCollisions));
+                    return;
+                }
             }
 
-            outputHandler.OutputResult(allCollisions.Any() ? FormatCollisions(allCollisions) : "no collision");
+            outputHandler.OutputResult("no collision");
         }
 
         /// <summary>
@@ -92,7 +97,7 @@ namespace CarSimulation.Simulation
         /// <returns>A formatted string representing the collisions.</returns>
         private string FormatCollisions(List<(List<string> CarsInvolved, (int X, int Y) Position, int Step)> collisions)
         {
-            StringBuilder collisionReport = new StringBuilder();
+            var collisionReport = new StringBuilder();
             foreach (var collision in collisions.OrderBy(c => c.Step))
             {
                 collisionReport.AppendLine($"{string.Join(" ", collision.CarsInvolved)}\n{collision.Position.X} {collision.Position.Y}\n{collision.Step}\n");

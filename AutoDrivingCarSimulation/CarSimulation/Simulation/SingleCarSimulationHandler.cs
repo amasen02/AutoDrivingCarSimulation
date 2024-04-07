@@ -11,6 +11,7 @@ namespace CarSimulation.Simulation
     {
         private readonly IInputHandler inputHandler;
         private readonly IOutputHandler outputHandler;
+        private readonly Field field;
 
         /// <summary>
         /// Initializes a new instance of the SingleCarSimulationHandler class.
@@ -21,6 +22,10 @@ namespace CarSimulation.Simulation
         {
             this.inputHandler = inputHandler;
             this.outputHandler = outputHandler;
+
+            // Initialize the field with simulation dimensions
+            var simulationInput = inputHandler.GetInput();
+            field = new Field(simulationInput.Width, simulationInput.Height);
         }
 
         /// <summary>
@@ -30,11 +35,10 @@ namespace CarSimulation.Simulation
         {
             // Retrieve the simulation input data
             var simulationInput = inputHandler.GetInput();
-            var field = new Field(simulationInput.Width, simulationInput.Height);
             var carInput = simulationInput.CarInputs.First();
 
             // Initialize the car using the input data
-            Car car = new Car(carInput.X, carInput.Y, carInput.Orientation);
+            var car = new Car(carInput.X, carInput.Y, carInput.Orientation);
 
             // Execute each command for the car
             foreach (var command in simulationInput.CommandsPerCar.Values.First())

@@ -9,6 +9,10 @@ namespace CarSimulation.Commands
     /// </summary>
     public class MoveForwardCommand : ICommand
     {
+        /// <summary>
+        /// Executes the move forward command, adjusting the car's position based on its orientation.
+        /// </summary>
+        /// <param name="car">The car to move forward.</param>
         public void Execute(Car car)
         {
             switch (car.Orientation)

@@ -1,6 +1,5 @@
 ﻿using CarSimulation.Interfaces;
 using CarSimulation.Models;
-using System.Collections.Generic;
 
 namespace CarSimulation.Utilities
 {

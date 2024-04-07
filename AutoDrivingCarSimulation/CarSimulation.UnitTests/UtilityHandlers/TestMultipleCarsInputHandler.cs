@@ -1,9 +1,7 @@
-﻿using CarSimulation.Interfaces;
-using CarSimulation.Models;
+﻿using CarSimulation.Commands;
 using CarSimulation.Enums;
-using CarSimulation.Commands;
-using System.Collections.Generic;
-using System.Linq;
+using CarSimulation.Interfaces;
+using CarSimulation.Models;
 
 namespace CarSimulation.UnitTests.UtilityHandlers
 {

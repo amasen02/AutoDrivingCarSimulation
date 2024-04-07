@@ -25,7 +25,6 @@ namespace AutoDrivingCarSimulation
         /// </summary>
         private static void WelcomeDisplay()
         {
-
             Console.WriteLine("         Welcome to the Car Simulation Program!\n\n");
             // Your ASCII art here
             Console.WriteLine("             __..-======-------..__");
@@ -47,7 +46,6 @@ namespace AutoDrivingCarSimulation
             Console.WriteLine("\n   Prepare for a high-speed simulation challenge!");
         }
 
-
         /// <summary>
         /// Continuously prompts the user for their simulation choice until they decide to exit.
         /// </summary>
@@ -60,10 +58,10 @@ namespace AutoDrivingCarSimulation
                 switch (choice)
                 {
                     case "1":
-                        RunSingleCarSimulation();
+                        RunSimulation(true);
                         break;
                     case "2":
-                        RunMultipleCarsSimulation();
+                        RunSimulation(false);
                         break;
                 }
             }
@@ -85,33 +83,13 @@ namespace AutoDrivingCarSimulation
         }
 
         /// <summary>
-        /// Initializes and runs the single car simulation.
+        /// Initializes and runs the simulation based on the specified simulation type.
         /// </summary>
-        private static void RunSingleCarSimulation()
-        {
-            IInputHandler inputHandler = new SingleCarInputHandler();
-            IOutputHandler outputHandler = new SingleCarOutputHandler();
-            InitializeAndRunSimulation(inputHandler, outputHandler, isSingle: true);
-        }
-
-        /// <summary>
-        /// Initializes and runs the multiple cars simulation.
-        /// </summary>
-        private static void RunMultipleCarsSimulation()
-        {
-            IInputHandler inputHandler = new MultipleCarsInputHandler();
-            IOutputHandler outputHandler = new MultipleCarsOutputHandler();
-            InitializeAndRunSimulation(inputHandler, outputHandler, isSingle: false);
-        }
-
-        /// <summary>
-        /// Initializes and runs the simulation based on the specified input and output handlers, and the simulation type.
-        /// </summary>
-        /// <param name="inputHandler">The input handler for gathering simulation settings.</param>
-        /// <param name="outputHandler">The output handler for displaying simulation results.</param>
         /// <param name="isSingle">Determines whether a single car or multiple cars simulation should be run.</param>
-        private static void InitializeAndRunSimulation(IInputHandler inputHandler, IOutputHandler outputHandler, bool isSingle)
+        private static void RunSimulation(bool isSingle)
         {
+            IInputHandler inputHandler = isSingle ? new SingleCarInputHandler() : new MultipleCarsInputHandler();
+            IOutputHandler outputHandler = isSingle ? new SingleCarOutputHandler() : new MultipleCarsOutputHandler();
             ISimulationHandler simulationHandler = SimulationHandlerFactory.CreateSimulationHandler(isSingle, inputHandler, outputHandler);
             TryRunSimulation(simulationHandler);
         }
