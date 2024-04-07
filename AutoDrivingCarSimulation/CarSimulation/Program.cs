@@ -25,7 +25,7 @@ namespace CarSimulation
         /// </summary>
         private static void WelcomeDisplay()
         {
-            Console.WriteLine("         Welcome to the Car Simulation Program!\n\n");
+            Console.WriteLine("                                                Welcome to the Car Simulation Program!\n\n");
 
             string asciiArt = @"
                                              __..-======-------..__
@@ -45,7 +45,7 @@ namespace CarSimulation
                                      `._.'.'                           \ `-' / [___...----''_.']
                                                                        `._.'.'
    
-                                   Prepare for a high-speed simulation challenge!";
+                                          Prepare for a high-speed simulation challenge!";
 
             Console.WriteLine(asciiArt);
         }
