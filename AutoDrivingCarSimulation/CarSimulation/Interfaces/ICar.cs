@@ -24,11 +24,6 @@ namespace CarSimulation.Interfaces
         Orientation Orientation { get; set; }
 
         /// <summary>
-        /// Indicates whether the car is involved in a collision.
-        /// </summary>
-        bool IsColliding { get; set; }
-
-        /// <summary>
         /// The simulation step at which the car experienced a collision.
         /// </summary>
         int CollisionStep { get; set; }

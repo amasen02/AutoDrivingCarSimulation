@@ -42,7 +42,7 @@ namespace CarSimulation.UnitTests.Tests
             simulationHandler.RunSimulation();
 
             // Assert
-            Assert.That(outputHandler.LastOutput, Is.EqualTo("no collision"), "The simulation incorrectly reported a collision.");
+            Assert.That(outputHandler.LastOutput, Is.EqualTo("No collision"), "The simulation incorrectly reported a collision.");
         }
 
         /// <summary>

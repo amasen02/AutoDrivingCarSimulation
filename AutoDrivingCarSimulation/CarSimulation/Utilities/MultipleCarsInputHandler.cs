@@ -27,7 +27,7 @@ namespace CarSimulation.Utilities
             // Option to add more cars
             while (true)
             {
-                DisplayMessage("Add another car? (y/n):");
+                DisplayMessage(Constants.AddAnotherCarPrompt);
                 if (ReadLine().Trim().ToLower() != "y") break;
                 AddCarInput(carInputs, commandsPerCar);
             }
@@ -42,7 +42,7 @@ namespace CarSimulation.Utilities
         /// <param name="commandsPerCar">Collection of commands per car.</param>
         private void AddCarInput(List<CarInput> carInputs, Dictionary<string, List<ICommand>> commandsPerCar)
         {
-            DisplayMessage("Enter car name:");
+            DisplayMessage(Constants.EnterCarNamePrompt);
             var name = ReadLine();
 
             var carInput = RequestCarInput(name);

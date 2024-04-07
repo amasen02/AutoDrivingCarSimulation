@@ -15,21 +15,36 @@ namespace CarSimulation.Commands
         /// <param name="car">The car to move forward.</param>
         public void Execute(Car car)
         {
-            switch (car.Orientation)
+            car.Position = GetNewPosition(car.Position, car.Orientation);
+        }
+
+        /// <summary>
+        /// Gets the new position of the car after executing the move forward command.
+        /// </summary>
+        /// <param name="currentPosition">The current position of the car.</param>
+        /// <param name="currentOrientation">The current orientation of the car.</param>
+        /// <returns>The new position of the car after executing the move forward command.</returns>
+        public (int X, int Y) GetNewPosition((int X, int Y) currentPosition, Orientation currentOrientation)
+        {
+            return currentOrientation switch
             {
-                case Orientation.N:
-                    car.Position = (car.Position.X, car.Position.Y + 1);
-                    break;
-                case Orientation.E:
-                    car.Position = (car.Position.X + 1, car.Position.Y);
-                    break;
-                case Orientation.S:
-                    car.Position = (car.Position.X, car.Position.Y - 1);
-                    break;
-                case Orientation.W:
-                    car.Position = (car.Position.X - 1, car.Position.Y);
-                    break;
-            }
+                Orientation.N => (currentPosition.X, currentPosition.Y + 1),
+                Orientation.E => (currentPosition.X + 1, currentPosition.Y),
+                Orientation.S => (currentPosition.X, currentPosition.Y - 1),
+                Orientation.W => (currentPosition.X - 1, currentPosition.Y),
+                _ => currentPosition
+            };
+        }
+
+        /// <summary>
+        /// Gets the new orientation of the car after executing the move forward command.
+        /// The orientation does not change when moving forward.
+        /// </summary>
+        /// <param name="currentOrientation">The current orientation of the car.</param>
+        /// <returns>The new orientation of the car after executing the move forward command.</returns>
+        public Orientation GetNewOrientation(Orientation currentOrientation)
+        {
+            return currentOrientation;
         }
     }
 }

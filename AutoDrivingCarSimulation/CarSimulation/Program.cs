@@ -2,7 +2,7 @@ using CarSimulation.Factory;
 using CarSimulation.Interfaces;
 using CarSimulation.Utilities;
 
-namespace AutoDrivingCarSimulation
+namespace CarSimulation
 {
     /// <summary>
     /// The main program class for running car simulations.

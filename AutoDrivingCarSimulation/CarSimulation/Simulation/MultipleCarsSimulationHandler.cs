@@ -1,5 +1,6 @@
 ﻿using CarSimulation.Interfaces;
 using CarSimulation.Models;
+using CarSimulation.Utilities;
 using System.Text;
 
 namespace CarSimulation.Simulation
@@ -43,7 +44,7 @@ namespace CarSimulation.Simulation
                 }
             }
 
-            outputHandler.OutputResult("no collision");
+            outputHandler.OutputResult(Constants.NoCollisionMessage);
         }
 
         /// <summary>
