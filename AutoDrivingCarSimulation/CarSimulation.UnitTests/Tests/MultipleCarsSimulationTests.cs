@@ -78,6 +78,39 @@ namespace CarSimulation.UnitTests.Tests
         }
 
         /// <summary>
+        /// Tests the simulation's ability to handle and correctly report collisions between more than 2 cars at the same position.
+        /// </summary>
+        [Test]
+        public void Simulation_WithMultiCars_CollisionBetweenMoreThan2CarsInSamePostion()
+        {
+            // Arrange
+            var inputHandler = new TestMultipleCarsInputHandler
+            {
+                CarInputsOverride = new List<CarInput>
+                    {
+                        new CarInput { Name = "A", X = 1, Y = 2, Orientation = Orientation.N },
+                        new CarInput { Name = "B", X = 7, Y = 8, Orientation = Orientation.W },
+                        new CarInput { Name = "C", X = 5, Y = 3, Orientation = Orientation.N },
+                    },
+                CommandsOverride = new Dictionary<string, List<ICommand>>
+                    {
+                        { "A", ParseCommands("FFRFFFFRRL") },
+                        { "B", ParseCommands("FFLFFFFFFF") },
+                        { "C", ParseCommands("LRLRLRFLRL") }
+                    }
+            };
+            var collisionDetector = new CollisionDetector();
+            var outputHandler = new TestOutputHandler();
+            var simulationHandler = new MultipleCarsSimulationHandler(inputHandler, outputHandler, collisionDetector);
+
+            // Act
+            simulationHandler.RunSimulation();
+
+            // Assert
+            Assert.AreEqual("A B C\n5 4\n7", outputHandler.LastOutput, "The simulation failed to report a collision between the two cars.");
+        } 
+
+        /// <summary>
         /// Parses a string of command characters ('F', 'R', 'L') into a corresponding list of ICommand objects.
         /// </summary>
         /// <param name="commandString">The string representing the sequence of commands.</param>
