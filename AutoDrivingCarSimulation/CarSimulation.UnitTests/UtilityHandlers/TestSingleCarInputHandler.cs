@@ -41,5 +41,34 @@ namespace CarSimulation.UnitTests.UtilityHandlers
                 }
             );
         }
+
+        /// <summary>
+        /// Executes a sequence of commands on a car, checking for and preventing movement outside the field boundaries.
+        /// </summary>
+        /// <param name="field">The simulation field.</param>
+        /// <param name="car">The car executing the commands.</param>
+        /// <param name="commands">The sequence of commands to execute.</param>
+        public void ExecuteCommandSequence(Field field, Car car, string commands)
+        {
+            foreach (var commandChar in commands)
+            {
+                ICommand command = commandChar switch
+                {
+                    'F' => new MoveForwardCommand(),
+                    'L' => new TurnLeftCommand(),
+                    'R' => new TurnRightCommand(),
+                    _ => null
+                };
+
+                var previousPosition = car.Position;
+                command?.Execute(car);
+
+                // If executing a command would move the car out of bounds, revert to the previous position.
+                if (!field.IsInsideBounds(car.Position))
+                {
+                    car.Position = previousPosition;
+                }
+            }
+        }
     }
 }

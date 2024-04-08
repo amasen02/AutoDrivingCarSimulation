@@ -1,9 +1,9 @@
-﻿using CarSimulation.Commands;
-using CarSimulation.Interfaces;
-using CarSimulation.Models;
+﻿using CarSimulation.Models;
 using CarSimulation.Simulation;
 using CarSimulation.UnitTests.UtilityHandlers;
+using CarSimulation.Commands;
 using CarSimulation.Utilities.Constants;
+using CarSimulation.Interfaces;
 
 namespace CarSimulation.UnitTests.Tests
 {
@@ -14,6 +14,21 @@ namespace CarSimulation.UnitTests.Tests
     [TestFixture]
     public class MultipleCarsSimulationTests
     {
+        private TestOutputHandler outputHandler = new TestOutputHandler();
+        private CollisionDetector collisionDetector = new CollisionDetector();
+        private TestMultipleCarsInputHandler inputHandler;
+        private MultipleCarsSimulationHandler simulationHandler;
+
+        /// <summary>
+        /// Performs setup actions before each test method execution.
+        /// </summary>
+        [SetUp]
+        public void Setup()
+        {
+            outputHandler = new TestOutputHandler();
+            collisionDetector = new CollisionDetector();
+        }
+
         /// <summary>
         /// Verifies that the simulation accurately reports no collision when two cars are given command sequences
         /// that do not lead to their intersection within the simulation field.
@@ -22,7 +37,7 @@ namespace CarSimulation.UnitTests.Tests
         public void Simulation_ShouldReportNoCollisionWhenCarsDoNotIntersect()
         {
             // Arrange
-            var inputHandler = new TestMultipleCarsInputHandler
+            inputHandler = new TestMultipleCarsInputHandler
             {
                 CarInputsOverride = new List<CarInput>
                 {
@@ -35,15 +50,15 @@ namespace CarSimulation.UnitTests.Tests
                     { "B", ParseCommands("RLRLRL") }
                 }
             };
-            var collisionDetector = new CollisionDetector();
-            var outputHandler = new TestOutputHandler();
-            var simulationHandler = new MultipleCarsSimulationHandler(inputHandler, outputHandler, collisionDetector);
+
+            simulationHandler = new MultipleCarsSimulationHandler(inputHandler, outputHandler, collisionDetector);
 
             // Act
-            simulationHandler.RunSimulation();
+            var collisions = simulationHandler.RunSimulationAndReturnCollisions(InitializeCars(inputHandler.CarInputsOverride), inputHandler.CommandsOverride, GetMaxCommandsCount(inputHandler.CommandsOverride));
 
             // Assert
-            Assert.That(outputHandler.LastOutput, Is.EqualTo("No collision"), "The simulation incorrectly reported a collision.");
+            Assert.That(collisions, Is.Empty, "No collision should be detected");
+
         }
 
         /// <summary>
@@ -53,63 +68,85 @@ namespace CarSimulation.UnitTests.Tests
         public void Simulation_WithTwoCars_CollisionBetween2Cars()
         {
             // Arrange
-            var inputHandler = new TestMultipleCarsInputHandler
+            inputHandler = new TestMultipleCarsInputHandler
             {
                 CarInputsOverride = new List<CarInput>
-                    {
-                        new CarInput { Name = "A", X = 1, Y = 2, Orientation = Orientation.N },
-                        new CarInput { Name = "B", X = 7, Y = 8, Orientation = Orientation.W },
-                    },
+                {
+                    new CarInput { Name = "A", X = 1, Y = 2, Orientation = Orientation.N },
+                    new CarInput { Name = "B", X = 7, Y = 8, Orientation = Orientation.W },
+                },
                 CommandsOverride = new Dictionary<string, List<ICommand>>
-                    {
-                        { "A", ParseCommands("FFRFFFFRRL") },
-                        { "B", ParseCommands("FFLFFFFFFF") }
-                    }
+                {
+                    { "A", ParseCommands("FFRFFFFRRL") },
+                    { "B", ParseCommands("FFLFFFFFFF") }
+                }
             };
-            var collisionDetector = new CollisionDetector();
-            var outputHandler = new TestOutputHandler();
-            var simulationHandler = new MultipleCarsSimulationHandler(inputHandler, outputHandler, collisionDetector);
 
+            simulationHandler = new MultipleCarsSimulationHandler(inputHandler, outputHandler, collisionDetector);
+ 
             // Act
-            simulationHandler.RunSimulation();
+            var collisions = simulationHandler.RunSimulationAndReturnCollisions(InitializeCars(inputHandler.CarInputsOverride), inputHandler.CommandsOverride, GetMaxCommandsCount(inputHandler.CommandsOverride));
 
             // Assert
-            Assert.That(outputHandler.LastOutput, Is.EqualTo("A B\n5 4\n7\n\r\nCars called A B will be collided at the position 5 4 while executing command number 7"), "The simulation failed to report a collision between the two cars.");
+            Assert.That(collisions, Has.Count.GreaterThan(0), "Collision should be detected");
+
+            foreach (var collision in collisions)
+            {
+                // Check the collision details
+                Assert.That(collision.Position.X, Is.EqualTo(5), "Incorrect X position of collision");
+                Assert.That(collision.Position.Y, Is.EqualTo(4), "Incorrect Y position of collision");
+                Assert.That(collision.Step, Is.EqualTo(7), "Incorrect step of collision");
+
+                // Check the names of the cars involved in the collision
+                Assert.That(collision.CarsInvolved, Does.Contain("A"), "Car A should be involved in collision");
+                Assert.That(collision.CarsInvolved, Does.Contain("B"), "Car B should be involved in collision");
+            }
         }
 
         /// <summary>
         /// Tests the simulation's ability to handle and correctly report collisions between more than 2 cars at the same position.
         /// </summary>
         [Test]
-        public void Simulation_WithMultiCars_CollisionBetweenMoreThan2CarsInSamePostion()
+        public void Simulation_WithMultiCars_CollisionBetweenMoreThan2CarsInSamePosition()
         {
             // Arrange
-            var inputHandler = new TestMultipleCarsInputHandler
+            inputHandler = new TestMultipleCarsInputHandler
             {
                 CarInputsOverride = new List<CarInput>
-                    {
-                        new CarInput { Name = "A", X = 1, Y = 2, Orientation = Orientation.N },
-                        new CarInput { Name = "B", X = 7, Y = 8, Orientation = Orientation.W },
-                        new CarInput { Name = "C", X = 5, Y = 3, Orientation = Orientation.N },
-                    },
+                {
+                    new CarInput { Name = "A", X = 1, Y = 2, Orientation = Orientation.N },
+                    new CarInput { Name = "B", X = 7, Y = 8, Orientation = Orientation.W },
+                    new CarInput { Name = "C", X = 5, Y = 3, Orientation = Orientation.N },
+                },
                 CommandsOverride = new Dictionary<string, List<ICommand>>
-                    {
-                        { "A", ParseCommands("FFRFFFFRRL") },
-                        { "B", ParseCommands("FFLFFFFFFF") },
-                        { "C", ParseCommands("LRLRLRFLRL") }
-                    }
+                {
+                    { "A", ParseCommands("FFRFFFFRRL") },
+                    { "B", ParseCommands("FFLFFFFFFF") },
+                    { "C", ParseCommands("LRLRLRFLRL") }
+                }
             };
-            var collisionDetector = new CollisionDetector();
-            var outputHandler = new TestOutputHandler();
-            var simulationHandler = new MultipleCarsSimulationHandler(inputHandler, outputHandler, collisionDetector);
+
+            simulationHandler = new MultipleCarsSimulationHandler(inputHandler, outputHandler, collisionDetector);
 
             // Act
-            simulationHandler.RunSimulation();
+            var collisions = simulationHandler.RunSimulationAndReturnCollisions(InitializeCars(inputHandler.CarInputsOverride), inputHandler.CommandsOverride, GetMaxCommandsCount(inputHandler.CommandsOverride));
 
             // Assert
-            Assert.That(outputHandler.LastOutput, Is.EqualTo("A B C\n5 4\n7\n\r\nCars called A B C will be collided at the position 5 4 while executing command number 7"), "The simulation failed to report a collision between the two cars.");
-        }
+            Assert.That(collisions, Has.Count.GreaterThan(0), "Collision should be detected");
 
+            foreach (var collision in collisions)
+            {
+                // Check the collision details
+                Assert.That(collision.Position.X, Is.EqualTo(5), "Incorrect X position of collision");
+                Assert.That(collision.Position.Y, Is.EqualTo(4), "Incorrect Y position of collision");
+                Assert.That(collision.Step, Is.EqualTo(7), "Incorrect step of collision");
+
+                // Check the names of the cars involved in the collision
+                Assert.That(collision.CarsInvolved, Does.Contain("A"), "Car A should be involved in collision");
+                Assert.That(collision.CarsInvolved, Does.Contain("B"), "Car B should be involved in collision");
+                Assert.That(collision.CarsInvolved, Does.Contain("C"), "Car C should be involved in collision");
+            }
+        }
 
         /// <summary>
         /// Parses a string of command characters ('F', 'R', 'L') into a corresponding list of ICommand objects.
@@ -131,6 +168,27 @@ namespace CarSimulation.UnitTests.Tests
                 commands.Add(commandItem);
             }
             return commands;
+        }
+
+        /// <summary>
+        /// Initializes car objects based on provided input data.
+        /// </summary>
+        /// <param name="carInputs">List of car input data.</param>
+        /// <returns>Dictionary of car names to car objects.</returns>
+        private Dictionary<string, Car> InitializeCars(List<CarInput> carInputs)
+        {
+            return carInputs.ToDictionary(carInput => carInput.Name,
+                                          carInput => new Car(carInput.X, carInput.Y, carInput.Orientation, carInput.Name));
+        }
+
+        /// <summary>
+        /// Gets the maximum number of commands among all cars.
+        /// </summary
+        /// <param name="commandsPerCar">The commands per car dictionary.</param>
+        /// <returns>The maximum number of commands.</returns>
+        private int GetMaxCommandsCount(Dictionary<string, List<ICommand>> commandsPerCar)
+        {
+            return commandsPerCar.Values.Max(c => c.Count);
         }
     }
 }

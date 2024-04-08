@@ -1,6 +1,8 @@
 ﻿using CarSimulation.Interfaces;
 using CarSimulation.Models;
 using CarSimulation.Utilities.Constants;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace CarSimulation.Simulation
@@ -36,7 +38,30 @@ namespace CarSimulation.Simulation
             var cars = InitializeCars(simulationInput.CarInputs);
             var maxCommandsCount = GetMaxCommandsCount(simulationInput.CommandsPerCar);
 
-            RunSimulationSteps(cars, simulationInput.CommandsPerCar, maxCommandsCount);
+            var collisions = RunSimulationAndReturnCollisions(cars, simulationInput.CommandsPerCar, maxCommandsCount);
+            HandleCollisionsOrNoCollisions(collisions);
+        }
+
+        /// <summary>
+        /// Executes the simulation steps and returns any collisions detected.
+        /// </summary>
+        /// <param name="cars">The cars participating in the simulation.</param>
+        /// <param name="commandsPerCar">The commands to be executed for each car.</param>
+        /// <param name="maxCommandsCount">The maximum number of commands among all cars.</param>
+        /// <returns>List of collisions detected during the simulation.</returns>
+        public List<Collision> RunSimulationAndReturnCollisions(Dictionary<string, Car> cars, Dictionary<string, List<ICommand>> commandsPerCar, int maxCommandsCount)
+        {
+            var collisions = new List<Collision>();
+            for (int step = 0; step < maxCommandsCount; step++)
+            {
+                ExecuteCommandsForStep(cars, commandsPerCar, step);
+                collisions = DetectCollisions(cars, step);
+                if (collisions.Any())
+                {
+                    break;
+                }
+            }
+            return collisions;
         }
 
         /// <summary>
@@ -61,26 +86,7 @@ namespace CarSimulation.Simulation
         }
 
         /// <summary>
-        /// Executes the commands for each car in parallel for each simulation step.
-        /// </summary>
-        /// <param name="cars">The cars participating in the simulation.</param>
-        /// <param name="commandsPerCar">The commands to be executed for each car.</param>
-        /// <param name="maxCommandsCount">The maximum number of commands among all cars.</param>
-        private void RunSimulationSteps(Dictionary<string, Car> cars, Dictionary<string, List<ICommand>> commandsPerCar, int maxCommandsCount)
-        {
-            for (int step = 0; step < maxCommandsCount; step++)
-            {
-                ExecuteCommandsForStep(cars, commandsPerCar, step);
-                if (DetectAndHandleCollisions(cars, step))
-                {
-                    return;
-                }
-            }
-            HandleNoCollisions();
-        }
-
-        /// <summary>
-        /// Executes the commands for all cars for a given simulation step.
+        /// Executes the commands for each car in the simulation step.
         /// </summary>
         /// <param name="cars">The cars participating in the simulation.</param>
         /// <param name="commandsPerCar">The commands to be executed for each car.</param>
@@ -98,26 +104,36 @@ namespace CarSimulation.Simulation
         }
 
         /// <summary>
-        /// Detects collisions between cars and handles them if detected.
+        /// Detects collisions between cars at a specific step of the simulation.
         /// </summary>
         /// <param name="cars">The cars participating in the simulation.</param>
         /// <param name="step">The current step of the simulation.</param>
-        /// <returns>True if a collision is detected and handled, otherwise false.</returns>
-        private bool DetectAndHandleCollisions(Dictionary<string, Car> cars, int step)
+        /// <returns>List of collisions detected at the given step.</returns>
+        private List<Collision> DetectCollisions(Dictionary<string, Car> cars, int step)
         {
-            var collisions = collisionDetector.DetectCollisions(cars, step + 1);
+            return collisionDetector.DetectCollisions(cars, step + 1);
+        }
+
+        /// <summary>
+        /// Handles collisions detected during the simulation or outputs a message if no collisions occurred.
+        /// </summary>
+        /// <param name="collisions">List of collisions detected during the simulation.</param>
+        private void HandleCollisionsOrNoCollisions(List<Collision> collisions)
+        {
             if (collisions.Any())
             {
                 HandleCollisions(collisions);
-                return true;
             }
-            return false;
+            else
+            {
+                HandleNoCollisions();
+            }
         }
 
         /// <summary>
         /// Handles collisions by formatting collision data and outputting the result.
         /// </summary>
-        /// <param name="collisions">The collisions detected during the simulation.</param>
+        /// <param name="collisions">List of collisions detected during the simulation.</param>
         private void HandleCollisions(List<Collision> collisions)
         {
             var collisionReport = FormatCollisions(collisions);
@@ -131,11 +147,12 @@ namespace CarSimulation.Simulation
         {
             outputHandler.OutputResult(MessageConstants.NoCollisionMessage);
         }
+
         /// <summary>
         /// Formats the list of collisions for output.
         /// </summary>
-        /// <param name="collisions">The collisions detected during the simulation.</param>
-        /// <returns>A formatted string representing the collisions.</returns>
+        /// <param name="collisions">List of collisions detected during the simulation.</param>
+        /// <returns>Formatted string representing the collisions.</returns>
         private string FormatCollisions(List<Collision> collisions)
         {
             var collisionReport = new StringBuilder();
@@ -151,8 +168,8 @@ namespace CarSimulation.Simulation
         /// <summary>
         /// Gets unique collisions based on their step.
         /// </summary>
-        /// <param name="collisions">The list of collisions.</param>
-        /// <returns>A collection of unique collisions.</returns>
+        /// <param name="collisions">List of collisions detected during the simulation.</param>
+        /// <returns>Collection of unique collisions.</returns>
         private IEnumerable<Collision> GetUniqueCollisions(List<Collision> collisions)
         {
             return collisions.GroupBy(c => c.Step).Select(group => group.First());
@@ -161,11 +178,11 @@ namespace CarSimulation.Simulation
         /// <summary>
         /// Appends collision details to the collision report.
         /// </summary>
-        /// <param name="collisionReport">The string builder to append the collision details to.</param>
-        /// <param name="collision">The collision to append details for.</param>
+        /// <param name="collisionReport">String builder to append the collision details to.</param>
+        /// <param name="collision">Collision to append details for.</param>
         private void AppendCollisionDetails(StringBuilder collisionReport, Collision collision)
         {
-            collisionReport.AppendLine($"{string.Join(" ", collision.CarsInvolved)}\n{collision.Position.X} {collision.Position.Y}\n{collision.Step}\n");
+            collisionReport.AppendLine($"{string.Join(" ", collision.CarsInvolved)}\n{collision.Position.X} {collision.Position.Y}\n{collision.Step}");
             string collisionExplanation = string.Format(MessageConstants.CollisionExplanation, string.Join(" ", collision.CarsInvolved), collision.Position.X, collision.Position.Y, collision.Step);
             collisionReport.AppendLine(collisionExplanation);
         }

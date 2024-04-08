@@ -49,7 +49,7 @@ namespace CarSimulation
                         break;
                 }
             }
-            while (choice.ToLower() != "q");
+            while (choice!= null && choice.ToLower() != "q");
         }
 
         /// <summary>

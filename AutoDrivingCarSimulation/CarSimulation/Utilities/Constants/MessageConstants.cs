@@ -82,7 +82,7 @@
         /// <summary>
         /// Template for the sigle car output explanation message.
         /// </summary>
-        public const string SingleCarOutputExplanation = "Car will be stopped at the position {0} {1} with orientation {2} after executing all commands.";
+        public const string SingleCarOutputExplanation = "Car will be stopped at the position {0} {1} facing {2} after executing all commands.";
 
         /// <summary>
         /// ASCII Art for the welcome display.

@@ -140,3 +140,9 @@ The unit tests adhere to the following design principles:
 - **Isolation:** Tests are designed to be independent of each other to isolate failures and facilitate debugging.
 - **Arrange-Act-Assert (AAA) Pattern:** Tests follow the AAA pattern, where setup (Arrange), execution (Act), and verification (Assert) are clearly separated for readability and maintainability.
 - **Test Data Management:** Test classes use predefined test data and inputs to ensure consistent and reproducible test results.
+
+```markdown
+#### Known limitations
+- **Handle only the first colision:** Program handles only the first  collision if there are more than 2 cars and there are more than 1 collision happens in single run.
+```
+
