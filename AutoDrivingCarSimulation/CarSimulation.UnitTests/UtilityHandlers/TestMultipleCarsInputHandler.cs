@@ -1,7 +1,7 @@
 ﻿using CarSimulation.Commands;
-using CarSimulation.Enums;
 using CarSimulation.Interfaces;
 using CarSimulation.Models;
+using CarSimulation.Utilities.Constants;
 
 namespace CarSimulation.UnitTests.UtilityHandlers
 {
@@ -27,7 +27,7 @@ namespace CarSimulation.UnitTests.UtilityHandlers
         /// </summary>
         /// <param name="carInputsOverride">Optional parameter for overriding the initial settings of cars in the simulation.</param>
         /// <param name="commandsOverride">Optional parameter for overriding the command sequences for each car.</param>
-        public TestMultipleCarsInputHandler(List<CarInput> carInputsOverride = null, Dictionary<string, List<ICommand>> commandsOverride = null)
+        public TestMultipleCarsInputHandler(List<CarInput>? carInputsOverride = null, Dictionary<string, List<ICommand>>? commandsOverride = null)
         {
             CarInputsOverride = carInputsOverride ?? new List<CarInput>();
             CommandsOverride = commandsOverride ?? new Dictionary<string, List<ICommand>>();

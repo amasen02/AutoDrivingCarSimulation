@@ -1,8 +1,8 @@
 ﻿using CarSimulation.Interfaces;
 using CarSimulation.Models;
-using System.Collections.Generic;
+using CarSimulation.Utilities.Constants;
 
-namespace CarSimulation.Utilities
+namespace CarSimulation.Utilities.InputHandlers
 {
     /// <summary>
     /// Handles input from the console for scenarios involving multiple cars,
@@ -42,7 +42,7 @@ namespace CarSimulation.Utilities
         /// <returns>A tuple containing car name, car input, and commands.</returns>
         private (string Name, CarInput CarInput, List<ICommand> Commands) RequestCarInputAndCommands()
         {
-            DisplayMessage(Constants.EnterCarNamePrompt);
+            DisplayMessage(MessageConstants.EnterCarNamePrompt);
             var name = ReadLine();
             var carInput = RequestCarInput(name);
             var commands = RequestCommands(name);
@@ -69,7 +69,7 @@ namespace CarSimulation.Utilities
         /// <returns>True if the user wants to add another car, otherwise false.</returns>
         private bool PromptToAddAnotherCar()
         {
-            DisplayMessage(Constants.AddAnotherCarPrompt);
+            DisplayMessage(MessageConstants.AddAnotherCarPrompt);
             return ReadLine().Trim().ToLower() == "y";
         }
     }

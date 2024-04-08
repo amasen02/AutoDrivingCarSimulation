@@ -1,8 +1,6 @@
 ﻿using CarSimulation.Interfaces;
 using CarSimulation.Models;
-using CarSimulation.Utilities;
-using System.Collections.Generic;
-using System.Linq;
+using CarSimulation.Utilities.Constants;
 using System.Text;
 
 namespace CarSimulation.Simulation
@@ -131,7 +129,7 @@ namespace CarSimulation.Simulation
         /// </summary>
         private void HandleNoCollisions()
         {
-            outputHandler.OutputResult(Constants.NoCollisionMessage);
+            outputHandler.OutputResult(MessageConstants.NoCollisionMessage);
         }
         /// <summary>
         /// Formats the list of collisions for output.
@@ -168,6 +166,8 @@ namespace CarSimulation.Simulation
         private void AppendCollisionDetails(StringBuilder collisionReport, Collision collision)
         {
             collisionReport.AppendLine($"{string.Join(" ", collision.CarsInvolved)}\n{collision.Position.X} {collision.Position.Y}\n{collision.Step}\n");
+            string collisionExplanation = string.Format(MessageConstants.CollisionExplanation, string.Join(" ", collision.CarsInvolved), collision.Position.X, collision.Position.Y, collision.Step);
+            collisionReport.AppendLine(collisionExplanation);
         }
     }
 }

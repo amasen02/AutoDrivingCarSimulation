@@ -1,7 +1,7 @@
 ﻿using CarSimulation.Commands;
-using CarSimulation.Enums;
 using CarSimulation.Interfaces;
 using CarSimulation.Models;
+using CarSimulation.Utilities.Constants;
 
 namespace CarSimulation.UnitTests.Tests
 {
@@ -23,8 +23,8 @@ namespace CarSimulation.UnitTests.Tests
             ExecuteCommandSequence(testField, car, commands);
 
             // Assert
-            Assert.AreEqual((4, 3), car.Position, "The car's final position is incorrect.");
-            Assert.AreEqual(Orientation.S, car.Orientation, "The car's final orientation is incorrect.");
+            Assert.That(car.Position, Is.EqualTo((4, 3)), "The car's final position is incorrect.");
+            Assert.That(car.Orientation, Is.EqualTo(Orientation.S), "The car's final orientation is incorrect.");
         }
 
         /// <summary>
@@ -43,8 +43,8 @@ namespace CarSimulation.UnitTests.Tests
             ExecuteCommandSequence(testField, car, commands);
 
             // Assert
-            Assert.AreEqual((1, 0), car.Position, "The car's final position is incorrect.");
-            Assert.AreEqual(Orientation.E, car.Orientation, "The car's final orientation is incorrect.");
+            Assert.That(car.Position, Is.EqualTo((1, 0)), "The car's final position is incorrect.");
+            Assert.That(car.Orientation, Is.EqualTo(Orientation.E), "The car's final orientation is incorrect.");
         }
 
         /// <summary>

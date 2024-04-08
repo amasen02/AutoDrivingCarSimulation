@@ -1,6 +1,6 @@
 ﻿using CarSimulation.Commands;
-using CarSimulation.Enums;
 using CarSimulation.Models;
+using CarSimulation.Utilities.Constants;
 
 namespace CarSimulation.UnitTests.Tests
 {
@@ -28,7 +28,7 @@ namespace CarSimulation.UnitTests.Tests
         {
             var command = new MoveForwardCommand();
             command.Execute(_car);
-            Assert.AreEqual((5, 6), _car.Position, "The MoveForwardCommand did not correctly move the car north.");
+            Assert.That(_car.Position, Is.EqualTo((5, 6)), "The MoveForwardCommand did not correctly move the car north.");
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace CarSimulation.UnitTests.Tests
         {
             var command = new TurnLeftCommand();
             command.Execute(_car);
-            Assert.AreEqual(Orientation.W, _car.Orientation, "The TurnLeftCommand did not correctly change the car's orientation to west.");
+            Assert.That(_car.Orientation, Is.EqualTo(Orientation.W), "The TurnLeftCommand did not correctly change the car's orientation to west.");
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace CarSimulation.UnitTests.Tests
         {
             var command = new TurnRightCommand();
             command.Execute(_car);
-            Assert.AreEqual(Orientation.E, _car.Orientation, "The TurnRightCommand did not correctly change the car's orientation to east.");
+            Assert.That(_car.Orientation, Is.EqualTo(Orientation.E), "The TurnRightCommand did not correctly change the car's orientation to east.");
         }
     }
 }

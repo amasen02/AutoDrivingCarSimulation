@@ -11,7 +11,7 @@ namespace CarSimulation.UnitTests.UtilityHandlers
         /// <summary>
         /// Gets the last output result produced by the simulation. This property is set each time OutputResult is called.
         /// </summary>
-        public string LastOutput { get; private set; }
+        public string? LastOutput { get; private set; }
 
         /// <summary>
         /// Captures the simulation output, storing it in the LastOutput property for later retrieval and verification.

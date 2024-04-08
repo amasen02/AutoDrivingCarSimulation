@@ -1,9 +1,9 @@
 ﻿using CarSimulation.Commands;
-using CarSimulation.Enums;
 using CarSimulation.Interfaces;
 using CarSimulation.Models;
 using CarSimulation.Simulation;
 using CarSimulation.UnitTests.UtilityHandlers;
+using CarSimulation.Utilities.Constants;
 
 namespace CarSimulation.UnitTests.Tests
 {
@@ -74,7 +74,7 @@ namespace CarSimulation.UnitTests.Tests
             simulationHandler.RunSimulation();
 
             // Assert
-            Assert.AreEqual("A B\n5 4\n7", outputHandler.LastOutput, "The simulation failed to report a collision between the two cars.");
+            Assert.That(outputHandler.LastOutput, Is.EqualTo("A B\n5 4\n7\n\r\nCars called A B will be collided at the position 5 4 while executing command number 7"), "The simulation failed to report a collision between the two cars.");
         }
 
         /// <summary>
@@ -107,8 +107,9 @@ namespace CarSimulation.UnitTests.Tests
             simulationHandler.RunSimulation();
 
             // Assert
-            Assert.AreEqual("A B C\n5 4\n7", outputHandler.LastOutput, "The simulation failed to report a collision between the two cars.");
-        } 
+            Assert.That(outputHandler.LastOutput, Is.EqualTo("A B C\n5 4\n7\n\r\nCars called A B C will be collided at the position 5 4 while executing command number 7"), "The simulation failed to report a collision between the two cars.");
+        }
+
 
         /// <summary>
         /// Parses a string of command characters ('F', 'R', 'L') into a corresponding list of ICommand objects.
