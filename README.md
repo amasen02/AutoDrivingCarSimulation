@@ -1,4 +1,3 @@
-
 ### Main Project - CarSimulation
 
 #### 1. Project Overview
@@ -18,51 +17,59 @@ The project follows a modular and object-oriented architecture, consisting of se
 
 #### 3. Code Structure
 ```markdown
+
 AutoDrivingCarSimulation
 │   AutoDrivingCarSimulation.sln
 │   
 └── CarSimulation
-│   │   CarSimulation.csproj
-│   │   Program.cs
-│   │   
-│   ├── Commands
-│   │       MoveForwardCommand.cs
-│   │       TurnLeftCommand.cs
-│   │       TurnRightCommand.cs
-│   │       
-│   ├── Enums
-│   │       Orientation.cs
-│   │       
-│   ├── Factory
-│   │       SimulationHandlerFactory.cs
-│   │       
-│   ├── Interfaces
-│   │       ICar.cs
-│   │       ICollisionDetector.cs
-│   │       ICommand.cs
-│   │       IInputHandler.cs
-│   │       IOutputHandler.cs
-│   │       ISimulationHandler.cs
-│   │       
-│   ├── Models
-│   │       Car.cs
-│   │       CarInput.cs
-│   │       Collision.cs
-│   │       Field.cs
-│   │       SimulationInput.cs
-│   │       
-│   ├── Simulation
-│   │       CollisionDetector.cs
-│   │       MultipleCarsSimulationHandler.cs
-│   │       SingleCarSimulationHandler.cs
-│   │       
-│   └── Utilities
-│           Constants.cs
-│           InputHandlerBase.cs
-│           MultipleCarsInputHandler.cs
-│           MultipleCarsOutputHandler.cs
-│           SingleCarInputHandler.cs
-│           SingleCarOutputHandler.cs
+    │   CarSimulation.csproj
+    │   Program.cs
+    │   
+    ├── Commands
+    │       MoveForwardCommand.cs
+    │       TurnLeftCommand.cs
+    │       TurnRightCommand.cs
+    │       
+    ├── Factory
+    │       SimulationHandlerFactory.cs
+    │       
+    ├── Interfaces
+    │       ICar.cs
+    │       ICollisionDetector.cs
+    │       ICommand.cs
+    │       IInputHandler.cs
+    │       IOutputHandler.cs
+    │       ISimulationHandler.cs
+    │       
+    ├── Models
+    │       Car.cs
+    │       CarInput.cs
+    │       Collision.cs
+    │       Field.cs
+    │       SimulationInput.cs
+    │       
+    ├── Simulation
+    │       CollisionDetector.cs
+    │       MultipleCarsSimulationHandler.cs
+    │       SingleCarSimulationHandler.cs
+    │       
+    └── Utilities
+            ├── Constants
+            │       Constants.cs
+            │       Orientation.cs
+            │       
+            ├── Extensions
+            │       OrientationExtensions.cs
+            │       
+            ├── InputHandlers
+            │       InputHandlerBase.cs
+            │       MultipleCarsInputHandler.cs
+            │       SingleCarInputHandler.cs
+            │       
+            └── OutputHandlers
+                    MultipleCarsOutputHandler.cs
+                    SingleCarOutputHandler.cs
+
 ```
 
 #### 4. Design Principles Followed
@@ -87,6 +94,7 @@ AutoDrivingCarSimulation
 ### Unit/Integration Test - CarSimulation.UnitTests
 
 #### Code Structure
+
 ```markdown
 └── CarSimulation.UnitTests
     │   CarSimulation.UnitTests.csproj
@@ -100,7 +108,9 @@ AutoDrivingCarSimulation
                 TestMultipleCarsInputHandler.cs
                 TestOutputHandler.cs
                 TestSingleCarInputHandler.cs
-``` 
+
+```
+
 #### 1. Test Details
 The CarSimulation.UnitTests project contains test classes responsible for testing various components and functionalities of the simulation system. These tests are designed to ensure that the implemented logic behaves as expected under different scenarios and inputs.
 
@@ -130,3 +140,9 @@ The unit tests adhere to the following design principles:
 - **Isolation:** Tests are designed to be independent of each other to isolate failures and facilitate debugging.
 - **Arrange-Act-Assert (AAA) Pattern:** Tests follow the AAA pattern, where setup (Arrange), execution (Act), and verification (Assert) are clearly separated for readability and maintainability.
 - **Test Data Management:** Test classes use predefined test data and inputs to ensure consistent and reproducible test results.
+
+```markdown
+#### Known limitations
+- **Handle only the first colision:** Program handles only the first  collision if there are more than 2 cars and there are more than 1 collision happens in single run.
+```
+

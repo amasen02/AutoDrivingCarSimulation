@@ -1,5 +1,5 @@
-using CarSimulation.Enums;
 using CarSimulation.Interfaces;
+using CarSimulation.Utilities.Constants;
 
 namespace CarSimulation.Models
 {

@@ -1,7 +1,8 @@
 ﻿using CarSimulation.Interfaces;
 using CarSimulation.Models;
-using System.Collections.Generic;
-using System.Linq;
+using CarSimulation.Utilities.Constants;
+using CarSimulation.Utilities.Extensions;
+using System.Text;
 
 namespace CarSimulation.Simulation
 {
@@ -11,9 +12,9 @@ namespace CarSimulation.Simulation
     /// </summary>
     public class SingleCarSimulationHandler : ISimulationHandler
     {
-        private readonly IInputHandler inputHandler;
         private readonly IOutputHandler outputHandler;
         private readonly Field field;
+        private readonly SimulationInput simulationInput;
 
         /// <summary>
         /// Initializes a new instance of the SingleCarSimulationHandler class.
@@ -22,9 +23,8 @@ namespace CarSimulation.Simulation
         /// <param name="outputHandler">Responsible for outputting the simulation results.</param>
         public SingleCarSimulationHandler(IInputHandler inputHandler, IOutputHandler outputHandler)
         {
-            this.inputHandler = inputHandler;
             this.outputHandler = outputHandler;
-            var simulationInput = inputHandler.GetInput();
+            simulationInput = inputHandler.GetInput();
             field = new Field(simulationInput.Width, simulationInput.Height);
         }
 
@@ -33,7 +33,6 @@ namespace CarSimulation.Simulation
         /// </summary>
         public void RunSimulation()
         {
-            var simulationInput = inputHandler.GetInput();
             var carInput = simulationInput.CarInputs.First();
             var car = InitializeCar(carInput);
             ExecuteCommands(car, simulationInput.CommandsPerCar.Values.First());
@@ -93,7 +92,11 @@ namespace CarSimulation.Simulation
         /// <param name="car">The car whose final position and orientation are to be output.</param>
         private void OutputFinalPosition(Car car)
         {
-            outputHandler.OutputResult($"{car.Position.X} {car.Position.Y} {car.Orientation}");
+            StringBuilder outputReport = new StringBuilder();
+            outputReport.AppendLine($"{car.Position.X} {car.Position.Y} {car.Orientation}\n");
+            string outputExplanation = string.Format(MessageConstants.SingleCarOutputExplanation, car.Position.X, car.Position.Y, car.Orientation.ToShorthandString());
+            outputReport.AppendLine(outputExplanation);
+            outputHandler.OutputResult(outputReport.ToString());
         }
     }
 }

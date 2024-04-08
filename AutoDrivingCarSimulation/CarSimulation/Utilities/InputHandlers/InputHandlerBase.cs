@@ -1,10 +1,10 @@
 ﻿using CarSimulation.Commands;
-using CarSimulation.Enums;
 using CarSimulation.Interfaces;
 using CarSimulation.Models;
+using CarSimulation.Utilities.Constants;
 using ICommand = CarSimulation.Interfaces.ICommand;
 
-namespace CarSimulation.Utilities
+namespace CarSimulation.Utilities.InputHandlers
 {
     /// <summary>
     /// Provides base functionality for handling user input, including methods for parsing simulation field dimensions,
@@ -36,7 +36,7 @@ namespace CarSimulation.Utilities
         /// <returns>A tuple containing the parsed width and height of the field.</returns>
         protected (int Width, int Height) RequestFieldSize()
         {
-            DisplayMessage(Constants.FieldSizePrompt);
+            DisplayMessage(MessageConstants.FieldSizePrompt);
             return ParseWidthHeight(ReadLine());
         }
 
@@ -52,14 +52,14 @@ namespace CarSimulation.Utilities
                 try
                 {
                     string prompt = string.IsNullOrEmpty(carName)
-                        ? Constants.CarPositionPrompt
-                        : string.Format(Constants.CarPositionPromptWithName, carName);
+                        ? MessageConstants.CarPositionPrompt
+                        : string.Format(MessageConstants.CarPositionPromptWithName, carName);
                     DisplayMessage(prompt);
                     return ParseCarDetails(ReadLine(), carName);
                 }
                 catch (FormatException ex)
                 {
-                    Console.WriteLine(string.Format(Constants.GeneralInputFormatError, ex.Message));
+                    Console.WriteLine(string.Format(MessageConstants.GeneralInputFormatError, ex.Message));
                 }
             }
         }
@@ -76,14 +76,14 @@ namespace CarSimulation.Utilities
                 try
                 {
                     string prompt = string.IsNullOrEmpty(carName)
-                        ? Constants.CommandsPrompt
-                        : string.Format(Constants.CommandsPromptWithName, carName);
+                        ? MessageConstants.CommandsPrompt
+                        : string.Format(MessageConstants.CommandsPromptWithName, carName);
                     DisplayMessage(prompt);
                     return ParseCommands(ReadLine());
                 }
                 catch (FormatException ex)
                 {
-                    Console.WriteLine(string.Format(Constants.GeneralInputFormatError, ex.Message));
+                    Console.WriteLine(string.Format(MessageConstants.GeneralInputFormatError, ex.Message));
                 }
             }
         }
@@ -110,7 +110,7 @@ namespace CarSimulation.Utilities
         {
             if (parts.Length != 2 || !int.TryParse(parts[0], out _) || !int.TryParse(parts[1], out _))
             {
-                throw new FormatException(Constants.InvalidFieldSizeFormat);
+                throw new FormatException(MessageConstants.InvalidFieldSizeFormat);
             }
         }
 
@@ -148,7 +148,7 @@ namespace CarSimulation.Utilities
             if (parts.Length != 3 || !int.TryParse(parts[0], out _) || !int.TryParse(parts[1], out _) ||
                 !Enum.TryParse(parts[2], true, out Orientation _))
             {
-                throw new FormatException(Constants.InvalidCarDetailsFormat);
+                throw new FormatException(MessageConstants.InvalidCarDetailsFormat);
             }
         }
 
@@ -165,7 +165,7 @@ namespace CarSimulation.Utilities
                 X = int.Parse(parts[0]),
                 Y = int.Parse(parts[1]),
                 Orientation = Enum.Parse<Orientation>(parts[2], true),
-                Name = carName ?? Constants.DefaultCarName
+                Name = carName ?? MessageConstants.DefaultCarName
             };
         }
 
@@ -185,7 +185,7 @@ namespace CarSimulation.Utilities
                     'L' => new TurnLeftCommand(),
                     'R' => new TurnRightCommand(),
                     'F' => new MoveForwardCommand(),
-                    _ => throw new FormatException(string.Format(Constants.InvalidCommandFormat, commandChar))
+                    _ => throw new FormatException(string.Format(MessageConstants.InvalidCommandFormat, commandChar))
                 };
                 commands.Add(command);
             }

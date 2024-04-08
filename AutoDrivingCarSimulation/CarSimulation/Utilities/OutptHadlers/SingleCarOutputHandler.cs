@@ -1,14 +1,14 @@
 ﻿using CarSimulation.Interfaces;
 
-namespace CarSimulation.Utilities
+namespace CarSimulation.Utilities.OutptHadlers
 {
     /// <summary>
-    /// Handles output for the multiple cars scenario to the console.
+    /// Handles output for the single car scenario to the console.
     /// </summary>
-    public class MultipleCarsOutputHandler : IOutputHandler
+    public class SingleCarOutputHandler : IOutputHandler
     {
         /// <summary>
-        /// Outputs the result of the multiple cars simulation to the console.
+        /// Outputs the result of the single car simulation to the console.
         /// </summary>
         /// <param name="result">The result to output.</param>
         public void OutputResult(string result)

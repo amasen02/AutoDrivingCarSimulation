@@ -1,9 +1,9 @@
-﻿namespace CarSimulation.Utilities
+﻿namespace CarSimulation.Utilities.Constants
 {
     /// <summary>
     /// Provides a centralized location for storing constant string values used throughout the application.
     /// </summary>
-    public static class Constants
+    public static class MessageConstants
     {
         /// <summary>
         /// The prompt message for requesting the width and height of the simulation field.
@@ -73,7 +73,17 @@
         /// The prompt message for requesting the simulation type.
         /// </summary>
         public static readonly string SimulationTypePrompt = "\nChoose simulation type:\n1. Single Car Simulation\n2. Multiple Cars Simulation\nType 'q' to exit.\nEnter your choice (1 or 2): ";
-        
+
+        /// <summary>
+        /// Template string for collision explanation.
+        /// </summary>
+        public const string CollisionExplanation = "Cars called {0} will be collided at the position {1} {2} while executing command number {3}\n";
+
+        /// <summary>
+        /// Template for the sigle car output explanation message.
+        /// </summary>
+        public const string SingleCarOutputExplanation = "Car will be stopped at the position {0} {1} facing {2} after executing all commands.";
+
         /// <summary>
         /// ASCII Art for the welcome display.
         /// </summary>

@@ -1,8 +1,7 @@
 ﻿using CarSimulation.Interfaces;
 using CarSimulation.Models;
-using System.Collections.Generic;
 
-namespace CarSimulation.Utilities
+namespace CarSimulation.Utilities.InputHandlers
 {
     /// <summary>
     /// Handles input from the console for a single car simulation scenario,

@@ -1,4 +1,4 @@
-﻿namespace CarSimulation.Enums
+﻿namespace CarSimulation.Utilities.Constants
 {
     // <summary>
     /// Represents the orientation of a car in the simulation environment.

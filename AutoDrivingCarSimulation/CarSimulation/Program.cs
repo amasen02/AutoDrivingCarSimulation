@@ -1,6 +1,8 @@
 using CarSimulation.Factory;
 using CarSimulation.Interfaces;
-using CarSimulation.Utilities;
+using CarSimulation.Utilities.Constants;
+using CarSimulation.Utilities.InputHandlers;
+using CarSimulation.Utilities.OutptHadlers;
 
 namespace CarSimulation
 {
@@ -25,7 +27,7 @@ namespace CarSimulation
         /// </summary>
         private static void WelcomeDisplay()
         {
-            Console.WriteLine(Constants.WelcomeMessage);
+            Console.WriteLine(MessageConstants.WelcomeMessage);
         }
 
         /// <summary>
@@ -47,7 +49,7 @@ namespace CarSimulation
                         break;
                 }
             }
-            while (choice.ToLower() != "q");
+            while (choice!= null && choice.ToLower() != "q");
         }
 
         /// <summary>
@@ -56,7 +58,7 @@ namespace CarSimulation
         /// <returns>The user's choice as a string.</returns>
         private static string GetUserChoice()
         {
-            Console.WriteLine(Constants.SimulationTypePrompt);
+            Console.WriteLine(MessageConstants.SimulationTypePrompt);
             return Console.ReadLine();
         }
 
@@ -84,7 +86,7 @@ namespace CarSimulation
             }
             catch (FormatException ex)
             {
-                Console.WriteLine(string.Format(Constants.GeneralInputFormatError, ex) );
+                Console.WriteLine(string.Format(MessageConstants.GeneralInputFormatError, ex));
             }
         }
     }
