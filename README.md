@@ -143,10 +143,10 @@ The unit tests adhere to the following design principles:
 
 ```markdown
 Known limitations
-Handle only the first colision:** Program handles only the first  collision if there are more than 2 cars and there are more than 1 collision happens in single run.
+-- Handle only the first colision:** Program handles only the first  collision if there are more than 2 cars and there are more than 1 collision happens in single run.
 
 Assumptions
-Program  assume that all cars in multi car simulation start in same time and process the same command step number at any given time.
+-- Program  assume that all cars in multi car simulation start in same time and process the same command step number at any given time.
 ```
 
 ![Screenshot 2024-04-08 234118](https://github.com/amasen02/AutoDrivingCarSimulation/assets/97525823/5c635663-2c70-457e-914d-6424feb10058)
