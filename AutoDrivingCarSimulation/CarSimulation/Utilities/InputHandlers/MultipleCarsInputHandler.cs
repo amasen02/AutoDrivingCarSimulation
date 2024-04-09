@@ -10,7 +10,9 @@ namespace CarSimulation.Utilities.InputHandlers
     /// </summary>
     public class MultipleCarsInputHandler : InputHandlerBase
     {
-        /// <inheritdoc/>
+        /// <summary>
+        /// Handles input from the console
+        /// </summary>
         public override SimulationInput GetInput()
         {
             var (width, height) = RequestFieldSize();

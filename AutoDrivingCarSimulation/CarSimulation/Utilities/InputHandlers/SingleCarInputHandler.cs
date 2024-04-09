@@ -9,6 +9,9 @@ namespace CarSimulation.Utilities.InputHandlers
     /// </summary>
     public class SingleCarInputHandler : InputHandlerBase
     {
+        /// <summary>
+        /// Handles input from the console
+        /// </summary>
         public override SimulationInput GetInput()
         {
             var (width, height) = RequestFieldSize();
@@ -19,6 +22,11 @@ namespace CarSimulation.Utilities.InputHandlers
             return new SimulationInput(width, height, new List<CarInput> { carInput }, commandsPerCar);
         }
 
+        /// <summary>
+        /// Populates car inputs and commands.
+        /// </summary>
+        /// <param name="carInputs">Collection of car inputs.</param>
+        /// <param name="commandsPerCar">Collection of commands per car.</param>
         private Dictionary<string, List<ICommand>> CreateCommandsPerCarDictionary(CarInput carInput, List<ICommand> commands)
         {
             return new Dictionary<string, List<ICommand>> { { carInput.Name, commands } };

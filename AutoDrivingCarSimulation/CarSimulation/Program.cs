@@ -49,7 +49,7 @@ namespace CarSimulation
                         break;
                 }
             }
-            while (choice!= null && choice.ToLower() != "q");
+            while (choice != null && choice.ToLower() != "q");
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace CarSimulation
             }
             catch (FormatException ex)
             {
-                Console.WriteLine(string.Format(MessageConstants.GeneralInputFormatError, ex));
+                Console.WriteLine(string.Format(MessageConstants.GeneralInputFormatError, ex.InnerException));
             }
         }
     }

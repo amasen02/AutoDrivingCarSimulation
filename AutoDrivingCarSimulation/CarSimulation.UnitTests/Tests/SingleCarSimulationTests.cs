@@ -1,6 +1,4 @@
-﻿using CarSimulation.Commands;
-using CarSimulation.Interfaces;
-using CarSimulation.Models;
+﻿using CarSimulation.Models;
 using CarSimulation.UnitTests.UtilityHandlers;
 using CarSimulation.Utilities.Constants;
 

@@ -1,9 +1,9 @@
-﻿using CarSimulation.Models;
+﻿using CarSimulation.Commands;
+using CarSimulation.Interfaces;
+using CarSimulation.Models;
 using CarSimulation.Simulation;
 using CarSimulation.UnitTests.UtilityHandlers;
-using CarSimulation.Commands;
 using CarSimulation.Utilities.Constants;
-using CarSimulation.Interfaces;
 
 namespace CarSimulation.UnitTests.Tests
 {
@@ -16,8 +16,8 @@ namespace CarSimulation.UnitTests.Tests
     {
         private TestOutputHandler outputHandler = new TestOutputHandler();
         private CollisionDetector collisionDetector = new CollisionDetector();
-        private TestMultipleCarsInputHandler inputHandler;
-        private MultipleCarsSimulationHandler simulationHandler;
+        private TestMultipleCarsInputHandler? inputHandler;
+        private MultipleCarsSimulationHandler? simulationHandler;
 
         /// <summary>
         /// Performs setup actions before each test method execution.
@@ -83,7 +83,7 @@ namespace CarSimulation.UnitTests.Tests
             };
 
             simulationHandler = new MultipleCarsSimulationHandler(inputHandler, outputHandler, collisionDetector);
- 
+
             // Act
             var collisions = simulationHandler.RunSimulationAndReturnCollisions(InitializeCars(inputHandler.CarInputsOverride), inputHandler.CommandsOverride, GetMaxCommandsCount(inputHandler.CommandsOverride));
 
