@@ -151,6 +151,56 @@ Assumptions
 
 ```
 
+
+# Steps to run using Docker
+
+This project comes with docker support to help users to easily run the app.
+
+## Prerequisites
+
+- Docker installed on your system
+
+## Getting Started
+
+1. Clone the repository:
+
+```markdown
+git clone https://github.com/amasen02/AutoDrivingCarSimulation.git
+```
+
+2. Navigate to the project directory:
+
+```markdown
+cd AutoDrivingCarSimulation
+```
+
+3. Build Docker containers:
+
+```markdown
+docker-compose build
+```
+
+4.Run unit tests:
+
+```markdown
+docker-compose run car-simulation-test
+```
+
+5. Run the simulation app:
+
+```markdown
+docker-compose run 
+```
+
+## Dockerfile and docker-compose.yml Explanation
+
+The Dockerfile sets up the .NET 8 SDK, copies the source code, builds the console app and test app, and sets the entry point to run the console app.
+
+The docker-compose.yml file defines two services: `car-simulation-test` and `car-simulation`. The `car-simulation-test` service runs the unit tests, and the `car-simulation` service runs the console app. The `car-simulation` service depends on the `car-simulation-test` service to ensure the tests complete successfully before the console app starts.
+
+The volumes are mounted to ensure the source code is accessible within the Docker containers.
+
+
 ![Screenshot 2024-04-08 234118](https://github.com/amasen02/AutoDrivingCarSimulation/assets/97525823/5c635663-2c70-457e-914d-6424feb10058)
 
 ![Screenshot 2024-04-08 174016](https://github.com/amasen02/AutoDrivingCarSimulation/assets/97525823/e5471bcd-51bf-40a2-bbb7-0007a0b016cd)
