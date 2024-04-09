@@ -36,8 +36,18 @@ namespace CarSimulation.Utilities.InputHandlers
         /// <returns>A tuple containing the parsed width and height of the field.</returns>
         protected (int Width, int Height) RequestFieldSize()
         {
-            DisplayMessage(MessageConstants.FieldSizePrompt);
-            return ParseWidthHeight(ReadLine());
+            while (true)
+            {
+                try
+                {
+                    DisplayMessage(MessageConstants.FieldSizePrompt);
+                    return ParseWidthHeight(ReadLine());
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(string.Format(MessageConstants.GeneralInputFormatError, ex.Message));
+                }
+            }
         }
 
         /// <summary>

@@ -1,0 +1,19 @@
+version: '1.0'
+
+services:
+
+  car-simulation-test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./AutoDrivingCarSimulation:/app/AutoDrivingCarSimulation
+    command: ["dotnet", "test", "/app/build/CarSimulation.UnitTests.dll"]
+
+  car-simulation:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./AutoDrivingCarSimulation:/app/AutoDrivingCarSimulation
+    command: ["dotnet", "/app/build/CarSimulation.dll"]
