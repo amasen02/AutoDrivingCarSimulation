@@ -206,6 +206,11 @@ The docker-compose.yml file defines two services: `car-simulation-test` and `car
 
 The volumes are mounted to ensure the source code is accessible within the Docker containers.
 
+
+#### Supported environments
+
+This project can be run in any os which suports docker( eg. Windows/Linux/Mac OS)
+
 ### Screenshots
 
 
