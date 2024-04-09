@@ -1,4 +1,4 @@
-### Main Project - CarSimulation
+## Main Project - CarSimulation
 
 #### 1. Project Overview
 The CarSimulation project is a simulation system designed to manage the movement of cars on a field. It supports two types of simulations: single-car and multiple-cars. Users can input field dimensions, initial car positions, orientations, and sequences of commands for each car. The simulation then executes these commands and provides the final positions, orientations, and any collisions that occur.
@@ -97,7 +97,8 @@ AutoDrivingCarSimulation
 - **Error Handling:** Includes mechanisms for input validation and format exceptions.
 - **Extensibility:** The modular design allows for easy extension with additional simulation types, input sources, or output formats.
 
-### Unit/Integration Test - CarSimulation.UnitTests
+
+## Unit/Integration Test - CarSimulation.UnitTests
 
 #### Code Structure
 
@@ -158,7 +159,7 @@ Assumptions
 ```
 
 
-### Steps to run using Docker
+## Steps to run using Docker
 
 This project comes with docker support to help users to easily run the app.
 
@@ -206,9 +207,15 @@ The docker-compose.yml file defines two services: `car-simulation-test` and `car
 
 The volumes are mounted to ensure the source code is accessible within the Docker containers.
 
-### Screenshots
 
 
+## Supported environments
+
+This project can be run on any OS that supports Docker (e.g., Windows, Linux, or Mac OS).
+
+
+
+## Screenshots
 
 
 ![Screenshot 2024-04-08 234118](https://github.com/amasen02/AutoDrivingCarSimulation/assets/97525823/5c635663-2c70-457e-914d-6424feb10058)
