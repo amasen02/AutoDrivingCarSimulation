@@ -81,13 +81,17 @@ AutoDrivingCarSimulation
 - **Interface Segregation Principle (ISP):** Interfaces are segregated based on client requirements, preventing clients from depending on methods they don't use.
 - **Dependency Inversion Principle (DIP):** High-level modules (e.g., simulation handlers) depend on abstractions (e.g., interfaces), rather than concrete implementations, promoting flexibility and testability.
 
-#### 5. Project Workflow
+#### 5. Design Patterns Used
+- **Factory Method:** Utilized in the SimulationHandlerFactory to create simulation handlers based on the simulation type.
+- **Strategy Pattern:** Implemented with the ICommand interface and its concrete implementations (MoveForwardCommand, TurnLeftCommand, TurnRightCommand) to encapsulate car actions.
+
+#### 6. Project Workflow
 1. **Input Collection:** Users input field size, initial car positions, orientations, and commands.
 2. **Simulation Initialization:** Based on the simulation type, appropriate handlers are initialized.
 3. **Simulation Execution:** The simulation handler processes commands for each car and detects collisions.
 4. **Output Display:** Simulation results, including final car positions, orientations, and collisions, are displayed.
 
-#### 6. Other Relevant Details
+#### 7. Other Relevant Details
 - **Error Handling:** Includes mechanisms for input validation and format exceptions.
 - **Extensibility:** The modular design allows for easy extension with additional simulation types, input sources, or output formats.
 
@@ -152,15 +156,15 @@ Assumptions
 ```
 
 
-# Steps to run using Docker
+### Steps to run using Docker
 
 This project comes with docker support to help users to easily run the app.
 
-## Prerequisites
+#### Prerequisites
 
 - Docker installed on your system
 
-## Getting Started
+#### Getting Started
 
 1. Clone the repository:
 
@@ -192,7 +196,7 @@ docker-compose run car-simulation-test
 docker-compose run 
 ```
 
-## Dockerfile and docker-compose.yml Explanation
+#### Dockerfile and docker-compose.yml Explanation
 
 The Dockerfile sets up the .NET 8 SDK, copies the source code, builds the console app and test app, and sets the entry point to run the console app.
 
@@ -200,10 +204,17 @@ The docker-compose.yml file defines two services: `car-simulation-test` and `car
 
 The volumes are mounted to ensure the source code is accessible within the Docker containers.
 
+### Screenshots
+
+
+
 
 ![Screenshot 2024-04-08 234118](https://github.com/amasen02/AutoDrivingCarSimulation/assets/97525823/5c635663-2c70-457e-914d-6424feb10058)
 
+
+
 ![Screenshot 2024-04-08 174016](https://github.com/amasen02/AutoDrivingCarSimulation/assets/97525823/e5471bcd-51bf-40a2-bbb7-0007a0b016cd)
+
 
 
 
