@@ -4,7 +4,7 @@
 The CarSimulation project is a simulation system designed to manage the movement of cars on a field. It supports two types of simulations: single-car and multiple-cars. Users can input field dimensions, initial car positions, orientations, and sequences of commands for each car. The simulation then executes these commands and provides the final positions, orientations, and any collisions that occur.
 
 #### 2. Architecture
-The project follows a modular and object-oriented architecture, consisting of several components:
+The project follows a monolithic architecture based on object-oriented concepts, consisting of several components:
 
 - **Main Program:** Entry point that initializes necessary handlers and orchestrates the simulation process.
 - **Simulation Handlers:** Responsible for executing the simulation based on user input, with separate handlers for single-car and multiple-cars simulations.
@@ -14,7 +14,9 @@ The project follows a modular and object-oriented architecture, consisting of se
 - **Commands:** Define actions that a car can perform, such as moving forward, turning left, and turning right.
 - **Collision Detector:** Detects collisions between cars during the simulation.
 - **Field:** Represents the simulation field and provides methods for checking if positions are within bounds.
-
+- **Extensions:** Represents the added behavior to existing classes without modifying the original class.
+- **Constants:** Represents read-only immutable classes and enums.
+  
 #### 3. Code Structure
 ```markdown
 
